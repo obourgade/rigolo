@@ -84,7 +84,23 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-fun-yellow to-fun-pink dark:from-fun-purple dark:to-fun-blue text-gray-800 dark:text-gray-200 transition-colors duration-500 font-comic">
+<body class="min-h-screen bg-gradient-to-br from-fun-yellow to-fun-pink dark:from-fun-purple dark:to-fun-blue text-gray-800 dark:text-gray-200 transition-colors duration-500 font-comic overflow-x-hidden">
+    <!-- Image de Francis Lalanne à gauche -->
+    <div class="fixed left-0 top-1/4 z-10 hidden md:block transform hover:scale-110 transition-transform hover:-rotate-6 duration-300">
+        <div class="relative">
+            <img src="francis.jpg" alt="Francis Lalanne" class="w-48 h-auto border-4 border-fun-yellow dark:border-fun-purple rounded-xl shadow-fun transform -rotate-6" />
+            <div class="absolute -top-3 -right-3 bg-fun-pink dark:bg-fun-green text-white text-xs px-2 py-1 rounded-full shadow-md transform rotate-12">Francis !</div>
+        </div>
+    </div>
+    
+    <!-- Image de Francis Lalanne à droite -->
+    <div class="fixed right-0 top-2/3 z-10 hidden md:block transform hover:scale-110 transition-transform hover:rotate-6 duration-300">
+        <div class="relative">
+            <img src="lalanne.jpg" alt="Francis Lalanne" class="w-48 h-auto border-4 border-fun-green dark:border-fun-orange rounded-xl shadow-fun transform rotate-6" />
+            <div class="absolute -top-3 -left-3 bg-fun-blue dark:bg-fun-pink text-white text-xs px-2 py-1 rounded-full shadow-md transform -rotate-12">Lalanne !</div>
+        </div>
+    </div>
+    
     <div class="container mx-auto px-4 py-8 max-w-3xl">
         <!-- Titre avec émoji flottant -->
         <div class="flex justify-center items-center mb-8">
@@ -152,23 +168,19 @@
                 <i class="fas fa-star-half-alt ml-2 animate-pulse" style="transform: scaleX(-1);"></i>
             </h2>
             <ul id="calemboursList" class="space-y-4 mt-6"></ul>
-        </div>
-        
-        <!-- Section GitHub -->
-        <div class="mt-10 transform rotate-1">
-            <h3 class="text-xl font-bold mb-4 text-center text-fun-purple dark:text-fun-green">
-                <i class="fab fa-github mr-2"></i> Publie ton générateur sur GitHub !
-            </h3>
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-fun border-4 border-dashed border-fun-green dark:border-fun-orange">
-                <ol class="list-decimal pl-6 space-y-3 text-lg">
-                    <li>Crée un compte sur <a href="https://github.com" target="_blank" class="text-fun-blue dark:text-fun-pink font-bold hover:underline">GitHub</a></li>
-                    <li>Crée un nouveau dépôt <span class="inline-block transform rotate-6 text-fun-pink dark:text-fun-yellow">public</span></li>
-                    <li>Enregistre ce code dans un fichier <code class="bg-fun-yellow dark:bg-fun-purple px-2 rounded-lg font-mono">index.html</code></li>
-                    <li>Active <span class="inline-block transform -rotate-3 text-fun-green">GitHub Pages</span> dans les paramètres</li>
-                    <li>Ton app sera en ligne ! 🎉</li>
-                </ol>
+            
+            <!-- Smiley "gogol" géant -->
+            <div class="flex justify-center mt-10 mb-6">
+                <div class="relative">
+                    <div class="text-9xl transform rotate-12 hover:rotate-0 transition-transform duration-300" id="bigSmiley">🥴</div>
+                    <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-fun-pink dark:text-fun-green">HIHIHI</div>
+                    <div class="absolute -top-6 -right-6 text-4xl animate-bounce-slow">💦</div>
+                    <div class="absolute -top-6 -left-6 text-4xl animate-bounce-slow" style="animation-delay: 0.5s;">💦</div>
+                </div>
             </div>
         </div>
+        
+
     </div>
 
     <script>
