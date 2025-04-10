@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Calembours</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        fun: {
+                            pink: '#FF61A6',
+                            yellow: '#FFD166',
+                            blue: '#118AB2',
+                            green: '#06D6A0',
+                            purple: '#9381FF',
+                            orange: '#FF9F1C'
+                        }
+                    },
+                    fontFamily: {
+                        comic: ['Comic Sans MS', 'cursive']
+                    },
+                    animation: {
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s infinite'
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .rotate-icon {
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .jelly-button:active {
+            animation: jelly 0.5s;
+        }
+        @keyframes jelly {
+            0%, 100% { transform: scale(1, 1); }
+            25% { transform: scale(0.95, 1.05); }
+            50% { transform: scale(1.05, 0.95); }
+            75% { transform: scale(0.95, 1.05); }
+        }
+        .shadow-fun {
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+        }
+        .speech-bubble {
+            position: relative;
+        }
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: currentColor transparent;
+            transform: translateX(-50%);
+        }
+        .dark .speech-bubble:after {
+            filter: brightness(0.8);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-fun-yellow to-fun-pink dark:from-fun-purple dark:to-fun-blue text-gray-800 dark:text-gray-200 transition-colors duration-500 font-comic">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- Titre avec émoji flottant -->
+        <div class="flex justify-center items-center mb-8">
+            <i class="fas fa-laugh-squint text-5xl text-fun-orange mr-4 float"></i>
+            <h1 class="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-fun-blue via-fun-purple to-fun-pink transform rotate-1">Générateur de Calembours</h1>
+            <i class="fas fa-grin-tears text-5xl text-fun-green ml-4 float" style="animation-delay: 1s;"></i>
+        </div>
+        
+        <!-- Carte principale -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-fun mb-8 border-4 border-fun-yellow dark:border-fun-purple transform -rotate-1">
+            <p class="mb-6 text-lg text-center"><i class="fas fa-magic mr-2 text-fun-pink animate-spin-slow"></i> Choisis une catégorie et prépare-toi à rire !</p>
+            
+            <div class="mb-6">
+                <label for="category" class="block mb-2 font-bold text-fun-blue dark:text-fun-green text-lg">
+                    <i class="fas fa-list-ul mr-2"></i> Catégorie :
+                </label>
+                <select id="category" class="w-full p-4 border-3 border-fun-green dark:border-fun-yellow rounded-xl bg-white dark:bg-gray-700 text-lg focus:ring-4 focus:ring-fun-pink focus:ring-opacity-50 transform hover:scale-105 transition-transform">
+                    <option value="random">🎲 Aléatoire</option>
+                    <option value="animals">🐘 Animaux</option>
+                    <option value="food">🍕 Nourriture</option>
+                    <option value="jobs">👨‍🔧 Métiers</option>
+                    <option value="science">🔬 Sciences</option>
+                </select>
+            </div>
+            
+            <div class="mb-6">
+                <label for="count" class="block mb-2 font-bold text-fun-pink dark:text-fun-orange text-lg">
+                    <i class="fas fa-sort-numeric-up-alt mr-2"></i> Combien de blagues ?
+                </label>
+                <div class="flex space-x-2">
+                    <button class="count-btn flex-1 py-3 px-2 bg-fun-yellow dark:bg-fun-blue text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg data-count=3" data-count="3">
+                        3 <i class="far fa-smile ml-1"></i>
+                    </button>
+                    <button class="count-btn flex-1 py-3 px-2 bg-fun-orange dark:bg-fun-green text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg" data-count="5">
+                        5 <i class="far fa-grin ml-1"></i>
+                    </button>
+                    <button class="count-btn flex-1 py-3 px-2 bg-fun-pink dark:bg-fun-purple text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg" data-count="10">
+                        10 <i class="far fa-laugh-beam ml-1"></i>
+                    </button>
+                </div>
+                <input type="hidden" id="count" value="3">
+            </div>
+            
+            <button id="generateBtn" class="w-full bg-gradient-to-r from-fun-blue to-fun-green dark:from-fun-pink dark:to-fun-purple text-white text-xl font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform jelly-button">
+                <i class="fas fa-bolt mr-2"></i> Générer des calembours !
+            </button>
+        </div>
+        
+        <!-- Animation de chargement -->
+        <div id="loadingContainer" class="hidden text-center py-10">
+            <div class="inline-block relative">
+                <i class="fas fa-laugh-beam text-7xl text-fun-yellow dark:text-fun-purple rotate-icon"></i>
+                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-fun-pink"></div>
+                </div>
+            </div>
+            <p class="mt-4 text-xl font-bold text-fun-pink dark:text-fun-green animate-pulse">Préparation des blagues...</p>
+        </div>
+        
+        <!-- Résultats -->
+        <div id="resultContainer" class="hidden">
+            <h2 class="text-2xl font-bold mb-4 text-center text-fun-blue dark:text-fun-yellow flex items-center justify-center">
+                <i class="fas fa-star-half-alt mr-2 animate-pulse"></i> 
+                Voilà tes calembours ! 
+                <i class="fas fa-star-half-alt ml-2 animate-pulse" style="transform: scaleX(-1);"></i>
+            </h2>
+            <ul id="calemboursList" class="space-y-4 mt-6"></ul>
+        </div>
+        
+        <!-- Section GitHub -->
+        <div class="mt-10 transform rotate-1">
+            <h3 class="text-xl font-bold mb-4 text-center text-fun-purple dark:text-fun-green">
+                <i class="fab fa-github mr-2"></i> Publie ton générateur sur GitHub !
+            </h3>
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-fun border-4 border-dashed border-fun-green dark:border-fun-orange">
+                <ol class="list-decimal pl-6 space-y-3 text-lg">
+                    <li>Crée un compte sur <a href="https://github.com" target="_blank" class="text-fun-blue dark:text-fun-pink font-bold hover:underline">GitHub</a></li>
+                    <li>Crée un nouveau dépôt <span class="inline-block transform rotate-6 text-fun-pink dark:text-fun-yellow">public</span></li>
+                    <li>Enregistre ce code dans un fichier <code class="bg-fun-yellow dark:bg-fun-purple px-2 rounded-lg font-mono">index.html</code></li>
+                    <li>Active <span class="inline-block transform -rotate-3 text-fun-green">GitHub Pages</span> dans les paramètres</li>
+                    <li>Ton app sera en ligne ! 🎉</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Détection du mode sombre
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Base de données de calembours
+        const calembourDB = {
+            random: [
+                "Pourquoi les pêcheurs sont-ils minces ? Parce qu'ils surveillent leur ligne !",
+                "Un homme qui court dans un camping est un campeur volant.",
+                "Qu'est-ce qu'un crocodile qui surveille la cour de récréation ? Un sac à dents.",
+                "Pourquoi les éléphants n'ont-ils pas d'ordinateur ? Ils ont peur des souris !",
+                "Comment appelle-t-on un chat tombé dans un pot de peinture le jour de Noël ? Un chat-peint de Noël !",
+                "Pourquoi les poissons n'aiment pas jouer au tennis ? Parce qu'ils ont peur du filet !",
+                "Quel est le comble pour un électricien ? Ne pas être au courant !",
+                "Qu'est-ce qu'un canif ? Un petit fien !",
+                "Pourquoi les français mangent-ils des escargots ? Parce qu'ils n'aiment pas la fast-food !",
+                "Quel fruit est assez fort pour couper des arbres ? Le ci-tron !",
+                "Pourquoi le livre de maths s'est-il suicidé ? Parce qu'il avait trop de problèmes !",
+                "Comment appelle-t-on un boomerang qui ne revient pas ? Un bâton !",
+                "Que fait une fraise sur un cheval ? Tagada Tagada !",
+                "Quel est le comble pour un marin ? Avoir le nez qui coule !",
+                "Que se dit un oignon quand il se cogne ? Aïe, mes yeux !"
+            ],
+            animals: [
+                "Comment appelle-t-on un chien magicien ? Un tour-bichon !",
+                "Que dit un escargot quand il croise une limace ? Oh, une personne nue !",
+                "Pourquoi les girafes ont-elles un long cou ? Parce que leurs pieds sentent mauvais !",
+                "Quel est l'animal le plus à la mode ? La zèbre, elle est toujours bien habillée !",
+                "Qu'est-ce qu'un crocodile qui surveille la cour de récréation ? Un sac à dents.",
+                "Pourquoi les éléphants n'ont-ils pas d'ordinateur ? Ils ont peur des souris !",
+                "Comment appelle-t-on un chat tombé dans un pot de peinture le jour de Noël ? Un chat-peint de Noël !",
+                "Pourquoi les poissons n'aiment pas jouer au tennis ? Parce qu'ils ont peur du filet !"
+            ],
+            food: [
+                "Que fait une fraise sur un cheval ? Tagada Tagada !",
+                "Que se dit un oignon quand il se cogne ? Aïe, mes yeux !",
+                "Comment appelle-t-on une patate qui a bronzé ? Une patate sautée !",
+                "Pourquoi les tomates font-elles de la musculation ? Pour être des tomates farcies !",
+                "Quel légume est toujours triste ? Le chou-fleur (chou en pleurs).",
+                "Quelle est la différence entre un piment et un poivron ? L'un est fort, l'autre non !",
+                "Pourquoi les oranges ne peuvent-elles pas se marier ? Parce qu'elles sont déjà pressées !"
+            ],
+            jobs: [
+                "Quel est le comble pour un électricien ? Ne pas être au courant !",
+                "Quel est le comble pour un marin ? Avoir le nez qui coule !",
+                "Pourquoi les pêcheurs sont-ils minces ? Parce qu'ils surveillent leur ligne !",
+                "Quel est le comble pour un plombier ? De prendre la fuite !",
+                "Quel est le métier le plus rassurant ? Facteur... car il apporte toujours des nouvelles !",
+                "Quel est le comble pour un jardinier ? Raconter des salades !",
+                "Quel est le comble pour un coiffeur ? Couper les cheveux en quatre !"
+            ],
+            science: [
+                "Pourquoi le livre de maths s'est-il suicidé ? Parce qu'il avait trop de problèmes !",
+                "Qu'est-ce qui fait 'Tic-Tic-Tic-BOUM' ? Un chronométreur bègue.",
+                "C'est l'histoire d'un photon qui part en voyage, mais il n'a pas besoin de valise car il voyage toujours en lumière !",
+                "Pourquoi les atomes ne sont-ils jamais tranquilles ? Parce qu'ils font toujours des liaisons !",
+                "Qu'est-ce qu'un électron libre ? Un électron qui ne travaille pas !",
+                "Quel est le point commun entre un thermomètre et un professeur ? Ils ont tous les deux des degrés mais pas dans la même matière !"
+            ]
+        };
+
+        // Emojis associés à chaque catégorie pour les bulles
+        const categoryEmojis = {
+            random: ['😂', '🤣', '😆', '😅', '😁'],
+            animals: ['🐶', '🐱', '🦁', '🐘', '🦒', '🐊'],
+            food: ['🍕', '🍔', '🍟', '🍩', '🥑', '🍎'],
+            jobs: ['👨‍🔧', '👩‍🔬', '👨‍🚒', '👩‍⚕️', '👨‍🍳'],
+            science: ['🔬', '🧪', '⚛️', '🧮', '📡']
+        };
+
+        // Couleurs associées à chaque catégorie pour les bulles
+        const categoryColors = {
+            random: ['bg-fun-pink', 'bg-fun-yellow', 'bg-fun-blue', 'bg-fun-green', 'bg-fun-purple', 'bg-fun-orange'],
+            animals: ['bg-fun-green', 'bg-fun-blue'],
+            food: ['bg-fun-orange', 'bg-fun-yellow'],
+            jobs: ['bg-fun-blue', 'bg-fun-purple'],
+            science: ['bg-fun-purple', 'bg-fun-pink']
+        };
+
+        // Éléments du DOM
+        const generateBtn = document.getElementById('generateBtn');
+        const categorySelect = document.getElementById('category');
+        const countInput = document.getElementById('count');
+        const countBtns = document.querySelectorAll('.count-btn');
+        const loadingContainer = document.getElementById('loadingContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const calemboursList = document.getElementById('calemboursList');
+
+        // Gestion des boutons de comptage
+        countBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Retirer la classe active de tous les boutons
+                countBtns.forEach(b => b.classList.remove('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110'));
+                
+                // Ajouter la classe active au bouton cliqué
+                btn.classList.add('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110');
+                
+                // Mettre à jour la valeur
+                countInput.value = btn.getAttribute('data-count');
+            });
+            
+            // Activer le premier bouton par défaut
+            if (btn.getAttribute('data-count') === '3') {
+                btn.classList.add('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110');
+            }
+        });
+
+        // Fonction pour montrer le chargement (simulation)
+        function showLoading() {
+            loadingContainer.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+            generateBtn.disabled = true;
+            generateBtn.classList.add('opacity-70');
+            
+            // Sons aléatoires de rire (simulation)
+            const laughSounds = ["haha", "hihi", "hoho"];
+            const randomLaugh = laughSounds[Math.floor(Math.random() * laughSounds.length)];
+            console.log(`Sound effect: ${randomLaugh}`);
+            
+            // Simulation d'un délai de chargement
+            setTimeout(generateCalembours, 1200);
+        }
+
+        // Fonction pour cacher le chargement
+        function hideLoading() {
+            loadingContainer.classList.add('hidden');
+            generateBtn.disabled = false;
+            generateBtn.classList.remove('opacity-70');
+        }
+        
+        // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // Fonction pour obtenir une couleur aléatoire basée sur la catégorie
+        function getRandomColor(category) {
+            const colors = categoryColors[category] || categoryColors.random;
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Fonction pour obtenir un emoji aléatoire basé sur la catégorie
+        function getRandomEmoji(category) {
+            const emojis = categoryEmojis[category] || categoryEmojis.random;
+            return emojis[Math.floor(Math.random() * emojis.length)];
+        }
+        
+        // Fonction pour générer une rotation aléatoire
+        function getRandomRotation() {
+            return Math.random() > 0.5 ? 
+                `rotate-${Math.floor(Math.random() * 2) + 1}` : 
+                `-rotate-${Math.floor(Math.random() * 2) + 1}`;
+        }
+        
+        // Fonction pour générer des calembours
+        function generateCalembours() {
+            const category = categorySelect.value;
+            const count = parseInt(countInput.value);
+            
+            let selectedCalembours = [];
+            
+            if (category === 'random') {
+                // Combiner tous les calembours dans une seule liste
+                let allCalembours = [];
+                for (const cat in calembourDB) {
+                    allCalembours = allCalembours.concat(calembourDB[cat]);
+                }
+                
+                // Supprimer les doublons
+                allCalembours = [...new Set(allCalembours)];
+                
+                // Mélanger et sélectionner le nombre demandé
+                selectedCalembours = shuffleArray(allCalembours).slice(0, count);
+            } else {
+                // Mélanger et sélectionner depuis la catégorie spécifique
+                const categoryCalembours = calembourDB[category];
+                
+                // Si pas assez de calembours dans la catégorie, prendre tous ceux disponibles
+                if (categoryCalembours.length <= count) {
+                    selectedCalembours = shuffleArray([...categoryCalembours]);
+                } else {
+                    selectedCalembours = shuffleArray([...categoryCalembours]).slice(0, count);
+                }
+            }
+            
+            // Afficher les calembours
+            calemboursList.innerHTML = '';
+            selectedCalembours.forEach(calembour => {
+                const li = document.createElement('li');
+                
+                const randomColor = getRandomColor(category);
+                const randomRotation = getRandomRotation();
+                const emoji = getRandomEmoji(category);
+                
+                li.className = `p-4 rounded-2xl ${randomColor} ${randomRotation} shadow-fun mb-6 transform transition-transform hover:scale-105 speech-bubble relative`;
+                
+                // Créer la bulle avec le calembour
+                li.innerHTML = `
+                    <div class="flex items-start">
+                        <span class="text-2xl mr-2">${emoji}</span>
+                        <p class="text-lg text-white">${calembour}</p>
+                    </div>
+                    <div class="absolute -top-3 -right-3 bg-white dark:bg-gray-800 text-fun-pink dark:text-fun-yellow rounded-full w-8 h-8 flex items-center justify-center shadow-md transform -rotate-12">
+                        <i class="fas fa-grin-squint-tears"></i>
+                    </div>
+                `;
+                
+                // Animation d'entrée
+                li.style.opacity = '0';
+                li.style.transform = 'translateY(20px) ' + (li.style.transform || '');
+                
+                calemboursList.appendChild(li);
+                
+                // Animer chaque élément séquentiellement
+                setTimeout(() => {
+                    li.style.opacity = '1';
+                    li.style.transform = li.style.transform.replace('translateY(20px)', '');
+                    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                }, 100 * calemboursList.children.length);
+            });
+            
+            hideLoading();
+            resultContainer.classList.remove('hidden');
+        }
+
+        // Événement de clic pour générer des calembours
+        generateBtn.addEventListener('click', showLoading);
+    </script>
+</body>
+</html>
