@@ -82,100 +82,151 @@
         .dark .speech-bubble:after {
             filter: brightness(0.8);
         }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-fun-yellow to-fun-pink dark:from-fun-purple dark:to-fun-blue text-gray-800 dark:text-gray-200 transition-colors duration-500 font-comic overflow-x-hidden">
-    <!-- Image de Francis Lalanne à gauche -->
-    <div class="fixed left-0 top-1/4 z-10 hidden md:block transform hover:scale-110 transition-transform hover:-rotate-6 duration-300">
-        <div class="relative">
-            <img src="francis.JPG" alt="Francis Lalanne" class="w-48 h-auto border-4 border-fun-yellow dark:border-fun-purple rounded-xl shadow-fun transform -rotate-6" />
-            <div class="absolute -top-3 -right-3 bg-fun-pink dark:bg-fun-green text-white text-xs px-2 py-1 rounded-full shadow-md transform rotate-12">Francis !</div>
+    
+    <!-- Page d'accueil avec les photos de Francis Lalanne -->
+    <div id="landingPage" class="min-h-screen flex flex-col items-center justify-center p-4">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-fun-blue via-fun-purple to-fun-pink">
+            L'Univers de Francis Lalanne
+        </h1>
+        
+        <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-10">
+            <!-- Photo de Francis à gauche -->
+            <div class="relative group cursor-pointer" onclick="showGenerator()">
+                <img src="francis.JPG" alt="Francis Lalanne" class="w-64 h-auto border-4 border-fun-yellow dark:border-fun-purple rounded-xl shadow-fun transform -rotate-3 group-hover:rotate-0 transition-transform duration-300" />
+                <div class="absolute -top-3 -right-3 bg-fun-pink dark:bg-fun-green text-white px-2 py-1 rounded-full shadow-md transform rotate-6">
+                    Francis !
+                </div>
+            </div>
+            
+            <!-- Photo de Francis à droite -->
+            <div class="relative group cursor-pointer" onclick="showGenerator()">
+                <img src="lalanne.JPG" alt="Francis Lalanne" class="w-64 h-auto border-4 border-fun-green dark:border-fun-orange rounded-xl shadow-fun transform rotate-3 group-hover:rotate-0 transition-transform duration-300" />
+                <div class="absolute -top-3 -left-3 bg-fun-blue dark:bg-fun-pink text-white px-2 py-1 rounded-full shadow-md transform -rotate-6">
+                    Lalanne !
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <p class="text-xl mb-6 text-fun-blue dark:text-fun-yellow">Clique sur Francis pour découvrir le générateur de calembours !</p>
+            <button onclick="showGenerator()" class="bg-fun-purple hover:bg-opacity-90 text-white font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform jelly-button pulse-animation">
+                <i class="fas fa-laugh-beam mr-2"></i> Entrer dans l'univers des calembours
+            </button>
         </div>
     </div>
     
-    <!-- Image de Francis Lalanne à droite -->
-    <div class="fixed right-0 top-2/3 z-10 hidden md:block transform hover:scale-110 transition-transform hover:rotate-6 duration-300">
-        <div class="relative">
-            <img src="lalanne.JPG" alt="Francis Lalanne" class="w-48 h-auto border-4 border-fun-green dark:border-fun-orange rounded-xl shadow-fun transform rotate-6" />
-            <div class="absolute -top-3 -left-3 bg-fun-blue dark:bg-fun-pink text-white text-xs px-2 py-1 rounded-full shadow-md transform -rotate-12">Lalanne !</div>
-        </div>
-    </div>
-    
-    <div class="container mx-auto px-4 py-8 max-w-3xl">
+    <!-- Le générateur de calembours (caché initialement) -->
+    <div id="generatorPage" class="hidden">
         <!-- Titre avec émoji flottant -->
-        <div class="flex justify-center items-center mb-8">
+        <div class="flex justify-center items-center mb-8 pt-8">
             <i class="fas fa-laugh-squint text-5xl text-fun-orange mr-4 float"></i>
             <h1 class="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-fun-blue via-fun-purple to-fun-pink transform rotate-1">Générateur de Calembours</h1>
             <i class="fas fa-grin-tears text-5xl text-fun-green ml-4 float" style="animation-delay: 1s;"></i>
         </div>
         
-        <!-- Carte principale -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-fun mb-8 border-4 border-fun-yellow dark:border-fun-purple transform -rotate-1">
-            <p class="mb-6 text-lg text-center"><i class="fas fa-magic mr-2 text-fun-pink animate-spin-slow"></i> Choisis une catégorie et prépare-toi à rire !</p>
-            
-            <div class="mb-6">
-                <label for="category" class="block mb-2 font-bold text-fun-blue dark:text-fun-green text-lg">
-                    <i class="fas fa-list-ul mr-2"></i> Catégorie :
-                </label>
-                <select id="category" class="w-full p-4 border-3 border-fun-green dark:border-fun-yellow rounded-xl bg-white dark:bg-gray-700 text-lg focus:ring-4 focus:ring-fun-pink focus:ring-opacity-50 transform hover:scale-105 transition-transform">
-                    <option value="random">🎲 Aléatoire</option>
-                    <option value="animals">🐘 Animaux</option>
-                    <option value="food">🍕 Nourriture</option>
-                    <option value="jobs">👨‍🔧 Métiers</option>
-                    <option value="science">🔬 Sciences</option>
-                </select>
-            </div>
-            
-            <div class="mb-6">
-                <label for="count" class="block mb-2 font-bold text-fun-pink dark:text-fun-orange text-lg">
-                    <i class="fas fa-sort-numeric-up-alt mr-2"></i> Combien de blagues ?
-                </label>
-                <div class="flex space-x-2">
-                    <button class="count-btn flex-1 py-3 px-2 bg-fun-yellow dark:bg-fun-blue text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg data-count=3" data-count="3">
-                        3 <i class="far fa-smile ml-1"></i>
-                    </button>
-                    <button class="count-btn flex-1 py-3 px-2 bg-fun-orange dark:bg-fun-green text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg" data-count="5">
-                        5 <i class="far fa-grin ml-1"></i>
-                    </button>
-                    <button class="count-btn flex-1 py-3 px-2 bg-fun-pink dark:bg-fun-purple text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg" data-count="10">
-                        10 <i class="far fa-laugh-beam ml-1"></i>
-                    </button>
-                </div>
-                <input type="hidden" id="count" value="3">
-            </div>
-            
-            <button id="generateBtn" class="w-full bg-gradient-to-r from-fun-blue to-fun-green dark:from-fun-pink dark:to-fun-purple text-white text-xl font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform jelly-button">
-                <i class="fas fa-bolt mr-2"></i> Générer des calembours !
+        <!-- Bouton retour -->
+        <div class="text-center mb-6">
+            <button onclick="showLandingPage()" class="bg-fun-blue hover:bg-opacity-90 text-white font-bold py-2 px-4 rounded-xl shadow-md transform hover:scale-105 transition-transform">
+                <i class="fas fa-arrow-left mr-2"></i> Retour
             </button>
         </div>
         
-        <!-- Animation de chargement -->
-        <div id="loadingContainer" class="hidden text-center py-10">
-            <div class="inline-block relative">
-                <i class="fas fa-laugh-beam text-7xl text-fun-yellow dark:text-fun-purple rotate-icon"></i>
-                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-                    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-fun-pink"></div>
-                </div>
+        <!-- Image de Francis Lalanne à gauche -->
+        <div class="fixed left-0 top-1/4 z-10 hidden md:block transform hover:scale-110 transition-transform hover:-rotate-6 duration-300">
+            <div class="relative">
+                <img src="francis.JPG" alt="Francis Lalanne" class="w-48 h-auto border-4 border-fun-yellow dark:border-fun-purple rounded-xl shadow-fun transform -rotate-6" />
+                <div class="absolute -top-3 -right-3 bg-fun-pink dark:bg-fun-green text-white text-xs px-2 py-1 rounded-full shadow-md transform rotate-12">Francis !</div>
             </div>
-            <p class="mt-4 text-xl font-bold text-fun-pink dark:text-fun-green animate-pulse">Préparation des blagues...</p>
         </div>
         
-        <!-- Résultats -->
-        <div id="resultContainer" class="hidden">
-            <h2 class="text-2xl font-bold mb-4 text-center text-fun-blue dark:text-fun-yellow flex items-center justify-center">
-                <i class="fas fa-star-half-alt mr-2 animate-pulse"></i> 
-                Voilà tes calembours ! 
-                <i class="fas fa-star-half-alt ml-2 animate-pulse" style="transform: scaleX(-1);"></i>
-            </h2>
-            <ul id="calemboursList" class="space-y-4 mt-6"></ul>
+        <!-- Image de Francis Lalanne à droite -->
+        <div class="fixed right-0 top-2/3 z-10 hidden md:block transform hover:scale-110 transition-transform hover:rotate-6 duration-300">
+            <div class="relative">
+                <img src="lalanne.JPG" alt="Francis Lalanne" class="w-48 h-auto border-4 border-fun-green dark:border-fun-orange rounded-xl shadow-fun transform rotate-6" />
+                <div class="absolute -top-3 -left-3 bg-fun-blue dark:bg-fun-pink text-white text-xs px-2 py-1 rounded-full shadow-md transform -rotate-12">Lalanne !</div>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-4 py-4 max-w-3xl">
+            <!-- Carte principale -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-fun mb-8 border-4 border-fun-yellow dark:border-fun-purple transform -rotate-1">
+                <p class="mb-6 text-lg text-center"><i class="fas fa-magic mr-2 text-fun-pink animate-spin-slow"></i> Choisis une catégorie et prépare-toi à rire !</p>
+                
+                <div class="mb-6">
+                    <label for="category" class="block mb-2 font-bold text-fun-blue dark:text-fun-green text-lg">
+                        <i class="fas fa-list-ul mr-2"></i> Catégorie :
+                    </label>
+                    <select id="category" class="w-full p-4 border-3 border-fun-green dark:border-fun-yellow rounded-xl bg-white dark:bg-gray-700 text-lg focus:ring-4 focus:ring-fun-pink focus:ring-opacity-50 transform hover:scale-105 transition-transform">
+                        <option value="random">🎲 Aléatoire</option>
+                        <option value="animals">🐘 Animaux</option>
+                        <option value="food">🍕 Nourriture</option>
+                        <option value="jobs">👨‍🔧 Métiers</option>
+                        <option value="science">🔬 Sciences</option>
+                    </select>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="count" class="block mb-2 font-bold text-fun-pink dark:text-fun-orange text-lg">
+                        <i class="fas fa-sort-numeric-up-alt mr-2"></i> Combien de blagues ?
+                    </label>
+                    <div class="flex space-x-2">
+                        <button class="count-btn flex-1 py-3 px-2 bg-fun-yellow dark:bg-fun-blue text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg data-count=3" data-count="3">
+                            3 <i class="far fa-smile ml-1"></i>
+                        </button>
+                        <button class="count-btn flex-1 py-3 px-2 bg-fun-orange dark:bg-fun-green text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg" data-count="5">
+                            5 <i class="far fa-grin ml-1"></i>
+                        </button>
+                        <button class="count-btn flex-1 py-3 px-2 bg-fun-pink dark:bg-fun-purple text-lg font-bold rounded-xl text-center shadow-md transform transition hover:scale-105 hover:shadow-lg" data-count="10">
+                            10 <i class="far fa-laugh-beam ml-1"></i>
+                        </button>
+                    </div>
+                    <input type="hidden" id="count" value="3">
+                </div>
+                
+                <button id="generateBtn" class="w-full bg-gradient-to-r from-fun-blue to-fun-green dark:from-fun-pink dark:to-fun-purple text-white text-xl font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform jelly-button">
+                    <i class="fas fa-bolt mr-2"></i> Générer des calembours !
+                </button>
+            </div>
             
-            <!-- Smiley "gogol" géant -->
-            <div class="flex justify-center mt-10 mb-6">
-                <div class="relative">
-                    <div class="text-9xl transform rotate-12 hover:rotate-0 transition-transform duration-300" id="bigSmiley">🥴</div>
-                    <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-fun-pink dark:text-fun-green">HIHIHI</div>
-                    <div class="absolute -top-6 -right-6 text-4xl animate-bounce-slow">💦</div>
-                    <div class="absolute -top-6 -left-6 text-4xl animate-bounce-slow" style="animation-delay: 0.5s;">💦</div>
+            <!-- Animation de chargement -->
+            <div id="loadingContainer" class="hidden text-center py-10">
+                <div class="inline-block relative">
+                    <i class="fas fa-laugh-beam text-7xl text-fun-yellow dark:text-fun-purple rotate-icon"></i>
+                    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-fun-pink"></div>
+                    </div>
+                </div>
+                <p class="mt-4 text-xl font-bold text-fun-pink dark:text-fun-green animate-pulse">Préparation des blagues...</p>
+            </div>
+            
+            <!-- Résultats -->
+            <div id="resultContainer" class="hidden">
+                <h2 class="text-2xl font-bold mb-4 text-center text-fun-blue dark:text-fun-yellow flex items-center justify-center">
+                    <i class="fas fa-star-half-alt mr-2 animate-pulse"></i> 
+                    Voilà tes calembours ! 
+                    <i class="fas fa-star-half-alt ml-2 animate-pulse" style="transform: scaleX(-1);"></i>
+                </h2>
+                <ul id="calemboursList" class="space-y-4 mt-6"></ul>
+                
+                <!-- Smiley "gogol" géant -->
+                <div class="flex justify-center mt-10 mb-6">
+                    <div class="relative">
+                        <div class="text-9xl transform rotate-12 hover:rotate-0 transition-transform duration-300" id="bigSmiley">🥴</div>
+                        <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 text-xl font-bold text-fun-pink dark:text-fun-green">HIHIHI</div>
+                        <div class="absolute -top-6 -right-6 text-4xl animate-bounce-slow">💦</div>
+                        <div class="absolute -top-6 -left-6 text-4xl animate-bounce-slow" style="animation-delay: 0.5s;">💦</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,6 +245,21 @@
                 document.documentElement.classList.remove('dark');
             }
         });
+
+        // Fonctions pour basculer entre la page d'accueil et le générateur
+        function showGenerator() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('generatorPage').classList.remove('hidden');
+            // Scroll en haut de page
+            window.scrollTo(0, 0);
+        }
+        
+        function showLandingPage() {
+            document.getElementById('generatorPage').classList.add('hidden');
+            document.getElementById('landingPage').classList.remove('hidden');
+            // Scroll en haut de page
+            window.scrollTo(0, 0);
+        }
 
         // Base de données de calembours
         const calembourDB = {
@@ -270,32 +336,41 @@
             science: ['bg-fun-purple', 'bg-fun-pink']
         };
 
-        // Éléments du DOM
-        const generateBtn = document.getElementById('generateBtn');
-        const categorySelect = document.getElementById('category');
-        const countInput = document.getElementById('count');
-        const countBtns = document.querySelectorAll('.count-btn');
-        const loadingContainer = document.getElementById('loadingContainer');
-        const resultContainer = document.getElementById('resultContainer');
-        const calemboursList = document.getElementById('calemboursList');
-
-        // Gestion des boutons de comptage
-        countBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Retirer la classe active de tous les boutons
-                countBtns.forEach(b => b.classList.remove('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110'));
+        // Éléments du DOM (chargés après showGenerator)
+        let generateBtn, categorySelect, countInput, countBtns, loadingContainer, resultContainer, calemboursList;
+        
+        // Initialisation des éléments DOM une fois le générateur affiché
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ces éléments ne sont accessibles qu'après showGenerator
+            generateBtn = document.getElementById('generateBtn');
+            categorySelect = document.getElementById('category');
+            countInput = document.getElementById('count');
+            countBtns = document.querySelectorAll('.count-btn');
+            loadingContainer = document.getElementById('loadingContainer');
+            resultContainer = document.getElementById('resultContainer');
+            calemboursList = document.getElementById('calemboursList');
+            
+            // Gestion des boutons de comptage
+            countBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Retirer la classe active de tous les boutons
+                    countBtns.forEach(b => b.classList.remove('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110'));
+                    
+                    // Ajouter la classe active au bouton cliqué
+                    btn.classList.add('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110');
+                    
+                    // Mettre à jour la valeur
+                    countInput.value = btn.getAttribute('data-count');
+                });
                 
-                // Ajouter la classe active au bouton cliqué
-                btn.classList.add('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110');
-                
-                // Mettre à jour la valeur
-                countInput.value = btn.getAttribute('data-count');
+                // Activer le premier bouton par défaut
+                if (btn.getAttribute('data-count') === '3') {
+                    btn.classList.add('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110');
+                }
             });
             
-            // Activer le premier bouton par défaut
-            if (btn.getAttribute('data-count') === '3') {
-                btn.classList.add('ring-4', 'ring-fun-blue', 'dark:ring-fun-pink', 'scale-110');
-            }
+            // Événement de clic pour générer des calembours
+            generateBtn.addEventListener('click', showLoading);
         });
 
         // Fonction pour montrer le chargement (simulation)
@@ -419,9 +494,6 @@
             hideLoading();
             resultContainer.classList.remove('hidden');
         }
-
-        // Événement de clic pour générer des calembours
-        generateBtn.addEventListener('click', showLoading);
     </script>
 </body>
 </html>
